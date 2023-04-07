@@ -1,0 +1,11 @@
+- name: Upstream Sync
+  uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
+  with:
+    # Branch receiving updates from the upstream repo, e.g. => main, master, prod
+    target_sync_branch: main
+    # Upstream repository, e.g. => aormsby/Fork-Sync-With-Upstream-action
+    upstream_sync_repo: yoheinakajima/babyagi
+    # Branch to sync from, e.g. => main, master, dev
+    upstream_sync_branch: main
+    # Args to print the list of new commits from upstream :: default = --pretty=oneline
+    git_log_format_args: # optional, default is --pretty=oneline
