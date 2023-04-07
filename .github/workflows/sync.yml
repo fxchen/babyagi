@@ -4,10 +4,15 @@ on: [push, fork]
 
 jobs:
   sync:
-    runs-on: 	ubuntu-20.04
-    steps:    
+    runs-on: 	ubuntu-latest
+    steps:
+      - name: Checkout target repo
+        uses: actions/checkout@v3
+        with:
+          ref:  main
       - name: Upstream Sync
         uses: aormsby/Fork-Sync-With-Upstream-action@v3.4
+        id: sync
         with:
           # Branch receiving updates from the upstream repo, e.g. => main, master, prod
           target_sync_branch: main
@@ -15,3 +20,12 @@ jobs:
           upstream_sync_repo: yoheinakajima/babyagi
           # Branch to sync from, e.g. => main, master, dev
           upstream_sync_branch: main
+      - name: New commits found
+        if: steps.sync.outputs.has_new_commits == 'true'
+        run: echo "New commits were found to sync."
+      - name: No new commits
+        if: steps.sync.outputs.has_new_commits == 'false'
+        run: echo "There were no new commits."
+
+      - name: Show value of 'has_new_commits'
+        run: echo ${{ steps.sync.outputs.has_new_commits }}
